@@ -11,6 +11,8 @@ class DateModel {
 
   List<int> lunar = List(3);
 
+  List<String> lunarMonthChineseList = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"];
+
 //  List<int> get lunar {
 //    if (lunar?.isNotEmpty == false) {
 //      return lunar;
@@ -29,6 +31,16 @@ class DateModel {
     } else {
       return LunarUtil.numToChinese(lunar[1], lunar[2], lunar[3]);
     }
+  }
+
+  // 完整的农历字符串，例如：2020年三月初四
+  String get fullLunarString {
+    String year = "${lunar[0]}年";
+    String leap = lunar[3] == 0 ? "" : "闰";
+    String month = lunarMonthChineseList[lunar[1] - 1];
+    String day = LunarUtil.numToChinese(lunar[1], lunar[2], lunar[3]);
+
+    return year + leap + month + day;
   }
 
   //24节气

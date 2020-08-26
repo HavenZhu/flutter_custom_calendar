@@ -122,7 +122,6 @@ class _MonthViewState extends State<MonthView>
               dateModel.isSelected = false;
             }
           }
-
           return ItemContainer(
             dateModel: dateModel,
             key: ObjectKey(
@@ -195,6 +194,10 @@ class ItemContainerState extends State<ItemContainer> {
     calendarProvider = Provider.of<CalendarProvider>(context, listen: false);
     configuration = calendarProvider.calendarConfiguration;
 
+    if (calendarProvider.lastClickItemState == null && dateModel == calendarProvider.selectDateModel) {
+      calendarProvider.lastClickItemState = this;
+    }
+
     return GestureDetector(
       //点击整个item都会触发事件
       behavior: HitTestBehavior.opaque,
@@ -204,11 +207,9 @@ class ItemContainerState extends State<ItemContainer> {
             message: "GestureDetector onTap: $dateModel}");
 
         //范围外不可点击
-        if (!dateModel.isInRange) {
+        if (!dateModel.isInRange && configuration.selectMode == CalendarConstants.MODE_MULTI_SELECT) {
           //多选回调
-          if (configuration.selectMode == CalendarConstants.MODE_MULTI_SELECT) {
-            configuration.multiSelectOutOfRange();
-          }
+          configuration.multiSelectOutOfRange();
           return;
         }
 
