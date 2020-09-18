@@ -983,7 +983,13 @@ class LunarUtil {
    * @return 传回农历 year年month月的总天数
    */
   static int daysInLunarMonth(int year, int month) {
-    if ((LUNAR_INFO[year - 1900] & (0x100000 >> month)) == 0)
+    int info = LUNAR_INFO[year - 1900];
+    int extra = 0;
+    if ((info & 0xf00000) != 0) {
+      // 有闰月
+      extra = 1;
+    }
+    if ((LUNAR_INFO[year - 1900] & (0x100000 >> (month + extra))) == 0)
       return 29;
     else
       return 30;

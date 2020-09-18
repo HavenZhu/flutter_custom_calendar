@@ -38,7 +38,12 @@ class DateModel {
     String year = "${lunar[0]}年";
     String leap = lunar[3] == 0 ? "" : "闰";
     String month = lunarMonthChineseList[lunar[1] - 1];
-    String day = LunarUtil.numToChinese(lunar[1], lunar[2], lunar[3]);
+    String day = "";
+    if (lunar[2] == 1) {
+      day = "初一";
+    } else {
+      day = LunarUtil.numToChinese(lunar[1], lunar[2], lunar[3]);
+    }
 
     return year + leap + month + day;
   }
